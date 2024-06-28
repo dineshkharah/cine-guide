@@ -3,10 +3,8 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Carousel from './components/Carousel';
 import MovieDetailPage from './components/MovieDetailPage';
-import movieData from './components/tempData2';
-import carouselData from './components/tempData1';
-import './App.css';
 import MovieSlider from './components/MovieSlider';
+import './App.css';
 
 const App = () => {
   return (
@@ -14,12 +12,21 @@ const App = () => {
       <Navbar />
       <Routes>
         <Route path="/" element={<>
-          <Carousel data={carouselData} />
-          <MovieSlider title="Latest Movies" movies={Object.values(movieData).slice(0, 10)} />
-          <MovieSlider title="Action Movies" movies={Object.values(movieData).filter(movie => movie.genre.includes('Action'))} />
-          <MovieSlider title="Comedy Movies" movies={Object.values(movieData).filter(movie => movie.genre.includes('Comedy'))} />
+          <Carousel />
+          <MovieSlider
+            title="Latest Movies"
+            fetchUrl={`https://api.themoviedb.org/3/movie/now_playing?api_key=${process.env.REACT_APP_API_KEY}&language=en-US&page=1`}
+          />
+          <MovieSlider
+            title="Action Movies"
+            fetchUrl={`https://api.themoviedb.org/3/discover/movie?api_key=${process.env.REACT_APP_API_KEY}&with_genres=28&language=en-US&page=1`}
+          />
+          <MovieSlider
+            title="Comedy Movies"
+            fetchUrl={`https://api.themoviedb.org/3/discover/movie?api_key=${process.env.REACT_APP_API_KEY}&with_genres=35&language=en-US&page=1`}
+          />
         </>} />
-        <Route path="/:movieId" element={<MovieDetailPage data={movieData} />} />
+        <Route path="/movie/:movieId" element={<MovieDetailPage />} />
       </Routes>
     </Router>
   );
