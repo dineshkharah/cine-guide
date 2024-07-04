@@ -44,7 +44,7 @@ const Carousel = () => {
                 <div className="carousel-inner">
                     {carouselData.map((movie, index) => (
                         <div className={`carousel-item ${index === 0 ? 'active' : ''}`} key={movie.id}>
-                            <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} className="carousel-image" alt={movie.title} />
+                            <img src={`https://image.tmdb.org/t/p/w500${movie.backdrop_path}`} className="carousel-image" alt={movie.title} />
                             <div className="carousel-caption d-block position-absolute top-0 start-0 w-100 h-100">
                                 <div className="overlay-text p-3">
                                     <h3 className="carousel-title">{movie.title}</h3>
