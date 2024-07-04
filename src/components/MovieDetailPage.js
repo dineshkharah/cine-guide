@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { FaStar } from "react-icons/fa";
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import MovieSlider from './MovieSlider';
 
 const MovieDetailPage = () => {
@@ -83,13 +83,21 @@ const MovieDetailPage = () => {
                     {actors.length > 0 && (
                         <p>
                             <span style={{ color: '#959499' }}>Starring: </span>
-                            {actors.map(actor => actor.name).join(', ')}
+                            {actors.map(actor => (
+                                <Link key={actor.id} to={`/person/${actor.id}`} style={{ color: '#fff' }}>
+                                    {actor.name}
+                                </Link>
+                            )).reduce((prev, curr) => [prev, ', ', curr])}
                         </p>
                     )}
                     {directors.length > 0 && (
                         <p>
                             <span style={{ color: '#959499' }}>Directed By: </span>
-                            {directors.map(director => director.name).join(', ')}
+                            {directors.map(director => (
+                                <Link key={director.id} to={`/person/${director.id}`} style={{ color: '#fff' }}>
+                                    {director.name}
+                                </Link>
+                            )).reduce((prev, curr) => [prev, ', ', curr])}
                         </p>
                     )}
                 </div>
@@ -118,7 +126,6 @@ const MovieDetailPage = () => {
                 <div>
                     <h2>You May Also Like</h2>
                     <MovieSlider
-
                         fetchUrl={`https://api.themoviedb.org/3/movie/${movieId}/similar?api_key=${process.env.REACT_APP_API_KEY}&language=en-US&page=1`}
                         limit={5}
                     />

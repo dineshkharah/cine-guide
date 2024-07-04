@@ -2,6 +2,21 @@
   margin: 0;
   padding: 0;
   font-family: "Roboto", sans-serif;
+
+
+}
+
+a {
+  color: inherit;
+  /* Inherit color from parent */
+  text-decoration: none;
+}
+
+a:hover {
+  color: inherit;
+  /* Inherit color on hover */
+  text-decoration: none;
+  /* No underline on hover */
 }
 
 /* 
@@ -30,6 +45,7 @@ body {
 
 }
 
+/* Navbar */
 .header {
   position: sticky;
   /* background-color: green; */
@@ -63,9 +79,11 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #fff;
-  border-radius: 8px;
-  height: 40px;
+  background-color: rgb(53, 92, 125);
+  /* border-radius: 30px; */
+  height: 20px;
+  gap: 0.5rem;
+  padding: 8px;
 }
 
 .search-box {
@@ -92,6 +110,22 @@ body {
   padding-left: 8px;
   cursor: pointer;
 }
+
+.search-button {
+  padding: 10px;
+  border: none;
+  background-color: rgb(53, 92, 125);
+  color: white;
+  border: 2px solid black;
+  cursor: pointer;
+  border-radius: 30px;
+}
+
+.search-button:hover {
+  transform: scale(1.1);
+  transition: 0.5s;
+}
+
 
 /* Carousel */
 
@@ -124,7 +158,6 @@ body {
   width: 100%;
   height: 450px;
   object-fit: cover;
-  opacity: 19;
 }
 
 
@@ -222,9 +255,10 @@ body {
 
 
 
-/* Movie Card */
+/* Movie Card & Series Card*/
 
-.movie-card {
+.movie-card,
+.series-card {
   border-radius: 15px;
   overflow: hidden;
   text-align: center;
@@ -237,23 +271,27 @@ body {
   /* background-color: aqua; */
 }
 
-.movie-card:hover {
+.movie-card:hover,
+.series-card:hover {
   transform: scale(1.05);
   text-decoration: none;
 }
 
-.movie-card--image {
+.movie-card--image,
+.series-card--image {
   width: 225px;
   height: 275px;
   object-fit: cover;
   border-radius: 20px;
 }
 
-.movie-card--info {
+.movie-card--info,
+.series-card--info {
   padding: 10px;
 }
 
-.movie-card--title {
+.movie-card--title,
+.series-card--title {
   font-size: 1.15em;
   margin: 5px 0;
   font-weight: bold;
@@ -264,7 +302,8 @@ body {
   color: #fff;
 }
 
-.movie-card--detail {
+.movie-card--detail,
+.series-card--detail {
   font-size: 1rem;
   color: #fff;
   white-space: nowrap;
@@ -276,7 +315,14 @@ body {
   padding: 15px 0;
 }
 
-.movie-card--year {
+.movie-card--year,
+.series-card--year {
+  background-color: hsla(0, 0%, 100%, 0.2);
+  padding: 1px 8px;
+  border-radius: 5px;
+}
+
+.series-card--episodes {
   background-color: hsla(0, 0%, 100%, 0.2);
   padding: 1px 8px;
   border-radius: 5px;
@@ -293,14 +339,16 @@ body {
 
 
 
-.movie-details {
+.movie-details,
+.series-details {
   display: flex;
   /* flex-direction: column; */
   padding: 50px 10%;
   gap: 50px;
 }
 
-.movie-details--main {
+.movie-details--main,
+.series-details--main {
   display: flex;
   flex-direction: column;
   gap: 50px;
@@ -309,7 +357,8 @@ body {
   /* background-color: aqua; */
 }
 
-.movie-detail--image img {
+.movie-detail--image img,
+.series-detail--image img {
   width: 265px;
   height: 400px;
   border-radius: 25px;
@@ -318,7 +367,8 @@ body {
   /* object-fit: cover; */
 }
 
-.movie-info {
+.movie-info,
+.series-info {
   display: flex;
   flex-direction: column;
   gap: 25px;
@@ -326,32 +376,37 @@ body {
   font-size: 1.1rem;
 }
 
-.movie-info--title {
+.movie-info--title,
+.series-info--title {
   font-size: 2.5rem;
   font-weight: bold;
 }
 
-.movie-info--data {
+.movie-info--data,
+.series-info--data {
   display: flex;
   gap: 20px;
   color: #959499;
   font-size: 1.1rem;
 }
 
-.movie-info--rating {
+.movie-info--rating,
+.series-info--rating {
   display: flex;
   gap: 5px;
   justify-content: center;
 }
 
-.movie-info--pgrating {
+.movie-info--pgrating,
+.series-info--pgrating {
   background-color: #636363;
   color: #fff;
   padding: 0px 10px;
   border-radius: 5px;
 }
 
-.movie-detail--trailerCard {
+.movie-detail--trailerCard,
+.series-detail--trailerCard {
   max-width: 500px;
   border-radius: 25px;
   display: flex;
@@ -370,15 +425,137 @@ body {
   border-radius: 25px;
 }*/
 
-.movie-detail--trailerCard iframe {
+.movie-detail--trailerCard iframe,
+.series-detail--trailerCard iframe {
   border-radius: 10px;
 }
 
-.movie-detail--trailerCard::-webkit-scrollbar {
+.movie-detail--trailerCard::-webkit-scrollbar,
+.series-detail--trailerCard::-webkit-scrollbar {
   height: 10px;
 }
 
-.movie-detail--trailerCard::-webkit-scrollbar-thumb {
+.movie-detail--trailerCard::-webkit-scrollbar-thumb,
+.series-detail--trailerCard::-webkit-scrollbar-thumb {
   background-color: #888;
   border-radius: 10px;
+}
+
+/* Search Page */
+.search-page {
+  padding: 40px;
+}
+
+.search-form {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.search-input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 15px;
+  margin-right: 10px;
+}
+
+.search-submit-button {
+  padding: 10px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.search-results {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.movie-card {
+  width: 200px;
+}
+
+.movie-card--image {
+  width: 100%;
+  border-radius: 10px;
+}
+
+.movie-card--info {
+  text-align: center;
+}
+
+
+/* Season */
+/* Add this to your CSS file */
+.season-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.season-card {
+  background-color: #1e1e1e;
+  border-radius: 8px;
+  overflow: hidden;
+  text-align: center;
+  transition: transform 0.3s;
+}
+
+.season-card:hover {
+  transform: scale(1.05);
+}
+
+.season-card--image {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.season-card--info {
+  padding: 0.5rem;
+}
+
+.season-card--title {
+  margin: 0.5rem 0;
+  font-size: 1.2rem;
+}
+
+.season-details {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+}
+
+.season-detail--image img {
+  width: 100%;
+  max-width: 500px;
+  border-radius: 8px;
+}
+
+.season-details--main {
+  width: 100%;
+  max-width: 800px;
+  margin-top: 1rem;
+}
+
+.season-info--title {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.season-info--data {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.episode-card {
+  background-color: #2a2a2a;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
 }
