@@ -1,4 +1,3 @@
-// src/components/PersonDetailPage.js
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
@@ -32,25 +31,29 @@ const PersonDetailPage = () => {
         fetchPersonCredits();
     }, [personId]);
 
+
+
     if (!person) {
         return <div>Loading...</div>;
     }
 
+    const limitedCredits = credits.slice(0, 20);
+
     return (
         <div className="person-details">
             <figure className="person-detail--image">
-                <img src={`https://image.tmdb.org/t/p/w500${person.profile_path}`} alt={person.name} />
+                <img src={`https://image.tmdb.org/t/p/w500${person.profile_path}`} alt={person.name} className='person-detail--image' />
             </figure>
             <div className="person-details--main">
                 <div className="person-info">
                     <h1 className="person-info--name">{person.name}</h1>
-                    <p>{person.biography}</p>
+                    <p className='person-info--biography' >{person.biography}</p>
                 </div>
                 <div>
                     <h2>Known For</h2>
                     <div className="person-credits">
-                        {credits.length > 0 ? (
-                            credits.map(credit => (
+                        {limitedCredits.length > 0 ? (
+                            limitedCredits.map(credit => (
                                 <MovieCard key={credit.id} movie={credit} />
                             ))
                         ) : (

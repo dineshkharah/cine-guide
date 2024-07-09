@@ -1,4 +1,3 @@
-// src/components/MovieDetailPage.js
 import React, { useEffect, useState } from 'react';
 import { FaStar } from "react-icons/fa";
 import axios from 'axios';
