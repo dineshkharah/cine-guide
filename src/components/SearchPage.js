@@ -16,6 +16,9 @@ const SearchPage = () => {
         if (urlQuery) {
             setQuery(urlQuery);
             fetchSearchResults(urlQuery);
+        } else {
+            setQuery('');
+            setResults([]);
         }
     }, [urlQuery]);
 
@@ -26,10 +29,18 @@ const SearchPage = () => {
             }, 500);
 
             return () => clearTimeout(timer);
+        } else {
+            navigate('/search');
+            setResults([]);
         }
     }, [query, navigate]);
 
     const fetchSearchResults = async (searchQuery) => {
+        if (!searchQuery) {
+            setResults([]);
+            return;
+        }
+
         let url = `https://api.themoviedb.org/3/search/multi?api_key=${process.env.REACT_APP_API_KEY}&query=${searchQuery}&language=en-US`;
 
         try {
@@ -45,6 +56,9 @@ const SearchPage = () => {
         e.preventDefault();
         if (query) {
             navigate(`/search?query=${query}`);
+        } else {
+            navigate('/search');
+            setResults([]);
         }
     };
 
@@ -73,7 +87,7 @@ const SearchPage = () => {
                         return null;
                     })
                 ) : (
-                    <p>No results found</p>
+                    <p style={{ color: "white", fontSize: "25px", padding: "15px" }}>No results found</p>
                 )}
             </div>
         </div>
