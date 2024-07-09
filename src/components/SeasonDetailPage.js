@@ -1,4 +1,3 @@
-// SeasonDetailPage.js
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
@@ -27,8 +26,8 @@ const SeasonDetailPage = () => {
 
     return (
         <div className="season-details">
-            <figure className="season-detail--image">
-                <img src={`https://image.tmdb.org/t/p/w500${season.poster_path}`} alt={season.name} />
+            <figure >
+                <img src={`https://image.tmdb.org/t/p/w500${season.poster_path}`} alt={season.name} className="season-detail--image" />
             </figure>
             <div className="season-details--main">
                 <div className="season-info">
@@ -37,20 +36,20 @@ const SeasonDetailPage = () => {
                         <p>{season.air_date ? new Date(season.air_date).getFullYear() : ''}</p>
                         <p>{season.episodes.length} Episodes</p>
                     </div>
-                    <p>{season.overview}</p>
+                    <p className="season-info--overview">{season.overview}</p>
                     <div>
-                        <h2>Episodes</h2>
+                        <h2 style={{ paddingBottom: "20px" }}>Episodes</h2>
                         <div className="season-episodes">
                             {season.episodes.map(episode => (
                                 <div key={episode.id} className="episode-card">
-                                    <img src={`https://image.tmdb.org/t/p/w500${episode.still_path}`} alt={episode.name} />
-                                    <h5>{episode.name}</h5>
-                                    <p>{episode.overview}</p>
-                                    <p>
+                                    <img src={`https://image.tmdb.org/t/p/w500${episode.still_path}`} alt={episode.name} className="episode-card--image" />
+                                    <h5 className="episode-card--title">{episode.name}</h5>
+                                    <p className="episode-card--overview">{episode.overview}</p>
+                                    <p className="episode-card--rating">
                                         <FaStar style={{ color: "#FFD700" }} />
                                         {episode.vote_average.toFixed(1)}
                                     </p>
-                                    <p>{episode.air_date}</p>
+                                    <p className="episode-card--airdate">{episode.air_date}</p>
                                 </div>
                             ))}
                         </div>
