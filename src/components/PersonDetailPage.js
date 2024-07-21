@@ -50,7 +50,7 @@ const PersonDetailPage = () => {
                     <p className='person-info--biography' >{person.biography}</p>
                 </div>
                 <div>
-                    <h2>Known For</h2>
+                    <h2 style={{ fontSize: "1.8rem" }}>Known For</h2>
                     <div className="person-credits">
                         {limitedCredits.length > 0 ? (
                             limitedCredits.map(credit => (
@@ -62,7 +62,7 @@ const PersonDetailPage = () => {
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
     );
 };
 
