@@ -162,7 +162,7 @@ body {
 
 
 .carousel-description {
-  max-width: 25rem;
+  max-width: 30rem;
   /* font-size: 1.15rem; */
   display: -webkit-box;
   -webkit-line-clamp: 3;
@@ -224,11 +224,19 @@ body {
 
 /* Movie Slider */
 
+/* MovieSlider.css */
+
 .movie-slider {
   padding: 0 1.25rem;
   margin: 1.25rem;
+  position: relative;
   color: #fff;
+}
 
+.movie-slider--header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .movie-slider--title {
@@ -236,14 +244,29 @@ body {
   font-weight: bold;
   margin-left: 1.25rem;
   letter-spacing: 0.1rem;
+}
 
+.movie-slider--controls {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.movie-slider--button {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+.movie-slider--button:hover {
+  color: #ddd;
 }
 
 .movie-slider--container {
   display: flex;
   overflow-x: auto;
   padding: 0.625rem;
-  /* scroll-behavior: smooth; */
 }
 
 .movie-slider--container::-webkit-scrollbar {
@@ -254,7 +277,6 @@ body {
   background-color: #888;
   border-radius: 0.625rem;
 }
-
 
 
 
