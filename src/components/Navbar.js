@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FaSearch } from "react-icons/fa";
 
 const Navbar = () => {
@@ -11,8 +11,7 @@ const Navbar = () => {
 
     return (
         <header className='header'>
-            <a href="/" className='logo'>Logo</a>
-
+            <Link to="/" className='logo'>CineGuide</Link>
 
             <button onClick={handleSearchClick} className='search-button'>
                 <section className='search-wrapper'>
@@ -21,8 +20,7 @@ const Navbar = () => {
                 </section>
             </button>
 
-
-            {/* <a href="/" className='login'>Login</a> */}
+            {/* <Link to="/login" className='login'>Login</Link> */}
         </header>
     );
 }
