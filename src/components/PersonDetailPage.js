@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import MovieCard from './MovieCard';
+import LazyLoad from './LazyLoad';
+import { Skeleton } from 'antd';
 
 const PersonDetailPage = () => {
     const { personId } = useParams();
@@ -31,10 +33,8 @@ const PersonDetailPage = () => {
         fetchPersonCredits();
     }, [personId]);
 
-
-
     if (!person) {
-        return <div>Loading...</div>;
+        return <Skeleton active paragraph={{ rows: 10 }} />;
     }
 
     const limitedCredits = credits.slice(0, 20);
@@ -42,19 +42,27 @@ const PersonDetailPage = () => {
     return (
         <div className="person-details">
             <figure className="person-detail--image">
-                <img src={`https://image.tmdb.org/t/p/w500${person.profile_path}`} alt={person.name} className='person-detail--image' />
+                <LazyLoad skeletonType="image">
+                    <img src={`https://image.tmdb.org/t/p/w500${person.profile_path}`} alt={person.name} className='person-detail--image' />
+                </LazyLoad>
             </figure>
             <div className="person-details--main">
                 <div className="person-info">
-                    <h1 className="person-info--name">{person.name}</h1>
-                    <p className='person-info--biography' >{person.biography}</p>
+                    <LazyLoad skeletonType="title">
+                        <h1 className="person-info--name">{person.name}</h1>
+                    </LazyLoad>
+                    <LazyLoad skeletonType="contentdesc">
+                        <p className='person-info--biography'>{person.biography}</p>
+                    </LazyLoad>
                 </div>
                 <div>
                     <h2 style={{ fontSize: "1.8rem" }}>Known For</h2>
                     <div className="person-credits">
                         {limitedCredits.length > 0 ? (
                             limitedCredits.map(credit => (
-                                <MovieCard key={credit.id} movie={credit} />
+                                <LazyLoad key={credit.id} skeletonType="card">
+                                    <MovieCard key={credit.id} movie={credit} />
+                                </LazyLoad>
                             ))
                         ) : (
                             <p>No credits available</p>
@@ -62,7 +70,7 @@ const PersonDetailPage = () => {
                     </div>
                 </div>
             </div>
-        </div >
+        </div>
     );
 };
 
