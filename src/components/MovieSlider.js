@@ -23,12 +23,11 @@ const MovieSlider = ({ title, fetchUrl, limit }) => {
 
     const displayedMovies = limit ? movies.slice(0, limit) : movies;
 
-    const scrollLeft = () => {
-        containerRef.current.scrollBy({ left: -200, behavior: 'smooth' });
-    };
-
-    const scrollRight = () => {
-        containerRef.current.scrollBy({ left: 200, behavior: 'smooth' });
+    const scroll = (direction) => {
+        const scrollAmount = direction === 'left' ? -200 : 200;
+        if (containerRef.current) {
+            containerRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+        }
     };
 
     return (
@@ -36,10 +35,10 @@ const MovieSlider = ({ title, fetchUrl, limit }) => {
             <div className="movie-slider--header">
                 <h3 className="movie-slider--title">{title}</h3>
                 <div className="movie-slider--controls">
-                    <button className="movie-slider--button" onClick={scrollLeft}>
+                    <button className="movie-slider--button" onClick={() => scroll('left')}>
                         <IoIosArrowDropleft />
                     </button>
-                    <button className="movie-slider--button" onClick={scrollRight}>
+                    <button className="movie-slider--button" onClick={() => scroll('right')}>
                         <IoIosArrowDropright />
                     </button>
                 </div>

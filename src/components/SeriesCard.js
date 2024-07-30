@@ -8,7 +8,7 @@ const SeriesCard = ({ series }) => {
         <LazyLoad skeletonType="card">
             <div className="series-card">
                 <Link to={`/series/${series.id}`}>
-                    <img src={`https://image.tmdb.org/t/p/w500${series.poster_path}`} alt={series.name} className="series-card--image" />
+                    <img src={`https://image.tmdb.org/t/p/w500${series.poster_path}`} alt={`Poster of ${series.name}`} className="series-card--image" />
                     <div className="series-card--info">
                         <h5 className="series-card--title">(S) {series.name}</h5>
                         <div className="series-card--detail">

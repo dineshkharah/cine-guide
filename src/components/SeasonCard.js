@@ -7,7 +7,7 @@ const SeasonCard = ({ season, seriesId }) => {
             <Link to={`/series/${seriesId}/season/${season.season_number}`}>
                 <img
                     src={`https://image.tmdb.org/t/p/w500${season.poster_path}`}
-                    alt={season.name}
+                    alt={`Poster of ${season.name}`}
                     className="season-card--image"
                 />
                 <div className="season-card--info">

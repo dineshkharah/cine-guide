@@ -9,7 +9,7 @@ const MovieCard = ({ movie }) => {
         <LazyLoad skeletonType="card">
             <div className="movie-card">
                 <Link to={`/movie/${movie.id}`}>
-                    <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt={title} className="movie-card--image" />
+                    <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt={`Poster of ${title}`} className="movie-card--image" />
                     <div className="movie-card--info">
                         <h5 className="movie-card--title">{title}</h5>
                         <div className="movie-card--detail">
