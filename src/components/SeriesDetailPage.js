@@ -65,8 +65,8 @@ const SeriesDetailPage = () => {
     return (
         <div className="series-details">
             <figure className="series-detail--image">
-                <LazyLoad skeletonType="image" >
-                    <img src={`https://image.tmdb.org/t/p/w500${series.poster_path}`} alt={series.name} />
+                <LazyLoad skeletonType="image">
+                    <img src={`https://image.tmdb.org/t/p/w500${series.poster_path}`} alt={`Poster of ${series.name}`} />
                 </LazyLoad>
             </figure>
             <div className="series-details--main">
@@ -115,7 +115,7 @@ const SeriesDetailPage = () => {
                                             frameBorder="0"
                                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                             allowFullScreen
-                                            title={trailer.name}
+                                            title={`Trailer: ${trailer.name}`}
                                         ></iframe>
                                     </LazyLoad>
                                 </div>
@@ -129,13 +129,13 @@ const SeriesDetailPage = () => {
                     <h2>Seasons</h2>
                     <div className="season-grid">
                         {series.seasons.map(season => (
-                            <LazyLoad skeletonType="card">
-                                <Link key={season.id} to={`/series/${seriesId}/season/${season.season_number}`} className="season-card">
+                            <LazyLoad key={season.id} skeletonType="card">
+                                <Link to={`/series/${seriesId}/season/${season.season_number}`} className="season-card">
                                     <figure>
                                         <img
                                             className="season-card--image"
                                             src={`https://image.tmdb.org/t/p/w500${season.poster_path}`}
-                                            alt={season.name}
+                                            alt={`Poster of ${season.name}`}
                                         />
                                     </figure>
                                     <div className="season-card--info">

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { FaStar } from "react-icons/fa";
 import axios from 'axios';
 import { useParams, Link } from 'react-router-dom';
@@ -13,48 +13,48 @@ const MovieDetailPage = () => {
     const [trailers, setTrailers] = useState([]);
     const [relatedMovies, setRelatedMovies] = useState([]);
 
+    const fetchMovieDetails = useCallback(async () => {
+        try {
+            const response = await axios.get(`https://api.themoviedb.org/3/movie/${movieId}?api_key=${process.env.REACT_APP_API_KEY}&language=en-US`);
+            setMovie(response.data);
+        } catch (error) {
+            console.error('Error fetching movie details:', error);
+        }
+    }, [movieId]);
+
+    const fetchMovieCredits = useCallback(async () => {
+        try {
+            const response = await axios.get(`https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=${process.env.REACT_APP_API_KEY}&language=en-US`);
+            setCredits(response.data);
+        } catch (error) {
+            console.error('Error fetching movie credits:', error);
+        }
+    }, [movieId]);
+
+    const fetchMovieTrailers = useCallback(async () => {
+        try {
+            const response = await axios.get(`https://api.themoviedb.org/3/movie/${movieId}/videos?api_key=${process.env.REACT_APP_API_KEY}&language=en-US`);
+            setTrailers(response.data.results.slice(0, 4));
+        } catch (error) {
+            console.error('Error fetching movie trailers:', error);
+        }
+    }, [movieId]);
+
+    const fetchRelatedMovies = useCallback(async () => {
+        try {
+            const response = await axios.get(`https://api.themoviedb.org/3/movie/${movieId}/similar?api_key=${process.env.REACT_APP_API_KEY}&language=en-US&page=1`);
+            setRelatedMovies(response.data.results);
+        } catch (error) {
+            console.error('Error fetching related movies:', error);
+        }
+    }, [movieId]);
+
     useEffect(() => {
-        const fetchMovieDetails = async () => {
-            try {
-                const response = await axios.get(`https://api.themoviedb.org/3/movie/${movieId}?api_key=${process.env.REACT_APP_API_KEY}&language=en-US`);
-                setMovie(response.data);
-            } catch (error) {
-                console.error('Error fetching movie details:', error);
-            }
-        };
-
-        const fetchMovieCredits = async () => {
-            try {
-                const response = await axios.get(`https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=${process.env.REACT_APP_API_KEY}&language=en-US`);
-                setCredits(response.data);
-            } catch (error) {
-                console.error('Error fetching movie credits:', error);
-            }
-        };
-
-        const fetchMovieTrailers = async () => {
-            try {
-                const response = await axios.get(`https://api.themoviedb.org/3/movie/${movieId}/videos?api_key=${process.env.REACT_APP_API_KEY}&language=en-US`);
-                setTrailers(response.data.results.slice(0, 4));
-            } catch (error) {
-                console.error('Error fetching movie trailers:', error);
-            }
-        };
-
-        const fetchRelatedMovies = async () => {
-            try {
-                const response = await axios.get(`https://api.themoviedb.org/3/movie/${movieId}/similar?api_key=${process.env.REACT_APP_API_KEY}&language=en-US&page=1`);
-                setRelatedMovies(response.data.results);
-            } catch (error) {
-                console.error('Error fetching related movies:', error);
-            }
-        };
-
         fetchMovieDetails();
         fetchMovieCredits();
         fetchMovieTrailers();
         fetchRelatedMovies();
-    }, [movieId]);
+    }, [movieId, fetchMovieDetails, fetchMovieCredits, fetchMovieTrailers, fetchRelatedMovies]);
 
     if (!movie || !credits) {
         return <Skeleton active paragraph={{ rows: 10 }} />;
@@ -78,7 +78,7 @@ const MovieDetailPage = () => {
                     <LazyLoad skeletonType="content">
                         <div className="movie-info--data">
                             <section className="movie-info--rating">
-                                <FaStar style={{ color: "#FFD700" }} />
+                                <FaStar style={{ color: "#FFD700" }} aria-hidden="true" />
                                 <p>{movie.vote_average.toFixed(1)}</p>
                             </section>
                             <p>{movie.runtime}m</p>

@@ -41,10 +41,8 @@ const SearchPage = () => {
             return;
         }
 
-        let url = `https://api.themoviedb.org/3/search/multi?api_key=${process.env.REACT_APP_API_KEY}&query=${searchQuery}&language=en-US`;
-
         try {
-            const response = await axios.get(url);
+            const response = await axios.get(`https://api.themoviedb.org/3/search/multi?api_key=${process.env.REACT_APP_API_KEY}&query=${searchQuery}&language=en-US`);
             setResults(response.data.results || []);
         } catch (error) {
             console.error('Error fetching search results:', error);

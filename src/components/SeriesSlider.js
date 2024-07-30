@@ -7,12 +7,10 @@ const SeriesSlider = ({ title, fetchUrl, limit }) => {
     const [series, setSeries] = useState([]);
     const containerRef = useRef(null);
 
-
     useEffect(() => {
         const fetchSeries = async () => {
             try {
                 const response = await axios.get(fetchUrl);
-                // console.log(response.data.results, "slider")
                 setSeries(response.data.results || []);
             } catch (error) {
                 console.error('Error fetching series:', error);

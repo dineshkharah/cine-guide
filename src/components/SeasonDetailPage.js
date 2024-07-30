@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { FaStar } from "react-icons/fa";
@@ -9,18 +9,18 @@ const SeasonDetailPage = () => {
     const { seriesId, seasonNumber } = useParams();
     const [season, setSeason] = useState(null);
 
-    useEffect(() => {
-        const fetchSeasonDetails = async () => {
-            try {
-                const response = await axios.get(`https://api.themoviedb.org/3/tv/${seriesId}/season/${seasonNumber}?api_key=${process.env.REACT_APP_API_KEY}&language=en-US`);
-                setSeason(response.data);
-            } catch (error) {
-                console.error('Error fetching season details:', error);
-            }
-        };
-
-        fetchSeasonDetails();
+    const fetchSeasonDetails = useCallback(async () => {
+        try {
+            const response = await axios.get(`https://api.themoviedb.org/3/tv/${seriesId}/season/${seasonNumber}?api_key=${process.env.REACT_APP_API_KEY}&language=en-US`);
+            setSeason(response.data);
+        } catch (error) {
+            console.error('Error fetching season details:', error);
+        }
     }, [seriesId, seasonNumber]);
+
+    useEffect(() => {
+        fetchSeasonDetails();
+    }, [fetchSeasonDetails]);
 
     if (!season) {
         return <Skeleton active paragraph={{ rows: 10 }} />;
