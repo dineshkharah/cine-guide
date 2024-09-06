@@ -12,6 +12,7 @@ const authenticateUser = require('./middleware/authentication');
 
 // Routers
 const authRouter = require('./routes/auth');
+const listRouter = require('./routes/listRoutes');
 // Additional routers (like watchlist, favorites) can be added here later
 
 // Error Handlers
@@ -23,6 +24,7 @@ app.use(express.json());
 
 // Routes
 app.use('/api/v1/auth', authRouter);
+app.use('/api/v1/lists', authenticateUser, listRouter);
 
 
 

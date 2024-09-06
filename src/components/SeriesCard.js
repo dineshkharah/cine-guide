@@ -1,9 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FaStar } from "react-icons/fa";
 import LazyLoad from './LazyLoad';
+import { Button, Modal } from 'antd';
 
 const SeriesCard = ({ series }) => {
+    const [isModalVisible, setIsModalVisible] = useState(false);
+
+    const showModal = () => {
+        setIsModalVisible(true);
+    }
+
+    const handleOk = () => {
+        setIsModalVisible(false);
+    }
+
+    const handleCancel = () => {
+        setIsModalVisible(false);
+    }
+
     return (
         <LazyLoad skeletonType="card">
             <div className="series-card">
@@ -20,6 +35,11 @@ const SeriesCard = ({ series }) => {
                         </div>
                     </div>
                 </Link>
+                <Button onClick={showModal} type="primary" style={{ backgroundColor: "rgb(26 26 78)" }}>Add to List</Button>
+                <Modal title="Add to List" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+                    {/* List selection or creation UI goes here */}
+                    <p>Select a list or create a new one.</p>
+                </Modal>
             </div>
         </LazyLoad>
     );

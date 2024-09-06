@@ -3,7 +3,7 @@ import { FaStar } from "react-icons/fa";
 import axios from 'axios';
 import { useParams, Link } from 'react-router-dom';
 import MovieSlider from './MovieSlider';
-import { Skeleton } from 'antd';
+import { Skeleton, Button, Modal } from 'antd';
 import LazyLoad from './LazyLoad';
 
 const MovieDetailPage = () => {
@@ -12,6 +12,7 @@ const MovieDetailPage = () => {
     const [credits, setCredits] = useState(null);
     const [trailers, setTrailers] = useState([]);
     const [relatedMovies, setRelatedMovies] = useState([]);
+    const [isModalVisible, setIsModalVisible] = useState(false);
 
     const fetchMovieDetails = useCallback(async () => {
         try {
@@ -56,6 +57,18 @@ const MovieDetailPage = () => {
         fetchRelatedMovies();
     }, [movieId, fetchMovieDetails, fetchMovieCredits, fetchMovieTrailers, fetchRelatedMovies]);
 
+    const showModal = () => {
+        setIsModalVisible(true);
+    };
+
+    const handleOk = () => {
+        setIsModalVisible(false);
+    }
+
+    const handleCancel = () => {
+        setIsModalVisible(false);
+    }
+
     if (!movie || !credits) {
         return <Skeleton active paragraph={{ rows: 10 }} />;
     }
@@ -69,7 +82,13 @@ const MovieDetailPage = () => {
                 <LazyLoad skeletonType="image">
                     <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt={movie.title} />
                 </LazyLoad>
+                <Button onClick={showModal} type='primary'> Add to List</Button>
+                <Modal title="Add to List" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+                    <p>List of lists </p>
+                </Modal>
             </figure>
+
+
             <div className="movie-details--main">
                 <div className="movie-info">
                     <LazyLoad skeletonType="title">
@@ -115,6 +134,7 @@ const MovieDetailPage = () => {
                             </p>
                         </LazyLoad>
                     )}
+
                 </div>
                 <div>
                     <h2>Clips and Trailers</h2>

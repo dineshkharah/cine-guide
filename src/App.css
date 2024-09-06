@@ -254,7 +254,7 @@ body {
   text-align: center;
   transition: transform 0.2s;
   margin: 1.25rem 0.313rem;
-  height: 23.5rem;
+  height: 26rem;
   width: 12.5rem;
 }
 
@@ -335,6 +335,14 @@ body {
   gap: 3.125rem;
   color: #fff;
   max-width: 65vw;
+}
+
+.movie-detail--image {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  /* top: 0; */
+  gap: 1.25rem;
 }
 
 .movie-detail--image img,
@@ -758,4 +766,9 @@ body {
 
 .footer-content a:hover {
   color: #fff;
+}
+
+
+.testaddtolist {
+  background-color: #0b0b42;
 }
