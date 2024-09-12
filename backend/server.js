@@ -2,6 +2,7 @@ require('dotenv').config();
 require('express-async-errors');
 const express = require('express');
 const mongoose = require('mongoose');
+const cors = require('cors');
 const app = express();
 
 // Connect to MongoDB
@@ -19,6 +20,13 @@ const listRouter = require('./routes/listRoutes');
 const notFoundMiddleware = require('./middleware/not-found');
 const errorHandlerMiddleware = require('./middleware/error-handler');
 
+// Cors
+app.use(cors({
+    origin: `http://localhost:5000`, // allow to server to accept request from different origin
+    credentials: true // allow session cookie from browser to pass through
+}));
+
+
 // Middleware to parse JSON
 app.use(express.json());
 
@@ -26,12 +34,10 @@ app.use(express.json());
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/lists', authenticateUser, listRouter);
 
-
-
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
 
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 4000;
 
 const start = async () => {
     try {
@@ -45,7 +51,6 @@ const start = async () => {
 };
 
 start();
-
 
 // Example of protected routes (add your protected routes here)
 // app.use('/api/v1/watchlist', authenticateUser, watchlistRouter);

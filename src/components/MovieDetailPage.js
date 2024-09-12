@@ -82,7 +82,7 @@ const MovieDetailPage = () => {
                 <LazyLoad skeletonType="image">
                     <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt={movie.title} />
                 </LazyLoad>
-                <Button onClick={showModal} type='primary'> Add to List</Button>
+                <Button onClick={showModal} style={{ backgroundColor: "rgb(26 26 78)" }} type='primary' > Add to List</Button>
                 <Modal title="Add to List" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
                     <p>List of lists </p>
                 </Modal>

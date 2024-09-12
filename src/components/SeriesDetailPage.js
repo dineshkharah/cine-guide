@@ -3,7 +3,7 @@ import { FaStar } from "react-icons/fa";
 import axios from 'axios';
 import { useParams, Link } from 'react-router-dom';
 import MovieSlider from './MovieSlider';
-import { Skeleton } from 'antd';
+import { Skeleton, Button, Modal } from 'antd';
 import LazyLoad from './LazyLoad';
 
 const SeriesDetailPage = () => {
@@ -12,6 +12,7 @@ const SeriesDetailPage = () => {
     const [credits, setCredits] = useState(null);
     const [trailers, setTrailers] = useState([]);
     const [relatedSeries, setRelatedSeries] = useState([]);
+    const [isModalVisible, setIsModalVisible] = useState(false);
 
     useEffect(() => {
         const fetchSeriesDetails = async () => {
@@ -56,6 +57,18 @@ const SeriesDetailPage = () => {
         fetchRelatedSeries();
     }, [seriesId]);
 
+    const showModal = () => {
+        setIsModalVisible(true);
+    };
+
+    const handleOk = () => {
+        setIsModalVisible(false);
+    }
+
+    const handleCancel = () => {
+        setIsModalVisible(false);
+    }
+
     if (!series || !credits) {
         return <Skeleton active paragraph={{ rows: 10 }} />;
     }
@@ -68,6 +81,10 @@ const SeriesDetailPage = () => {
                 <LazyLoad skeletonType="image">
                     <img src={`https://image.tmdb.org/t/p/w500${series.poster_path}`} alt={`Poster of ${series.name}`} />
                 </LazyLoad>
+                <Button onClick={showModal} style={{ backgroundColor: "rgb(26 26 78)" }} type='primary' > Add to List</Button>
+                <Modal title="Add to List" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+                    <p>List of lists </p>
+                </Modal>
             </figure>
             <div className="series-details--main">
                 <div className="series-info">
