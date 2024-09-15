@@ -106,10 +106,6 @@ body {
   margin: 0;
 }
 
-/* .dropdown-menu ul li {
-  margin-bottom: 0.5rem;
-} */
-
 .dropdown-items {
   background: none;
   border: none;
@@ -144,6 +140,78 @@ body {
   color: #fff;
   font-weight: bold;
 }
+
+/* Profile Page */
+.delete-account-btn {
+  margin-top: 20px;
+  width: 100%;
+  background-color: #ff4d4f;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.delete-account-btn:hover {
+  background-color: #ff7875;
+}
+
+.profile-page h3 {
+  margin-top: 30px;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.ant-form-item label {
+  font-weight: bold;
+}
+
+.ant-input,
+.ant-select,
+.ant-input-password {
+  height: 40px;
+  font-size: 14px;
+}
+
+.ant-select-selector {
+  height: 40px !important;
+  display: flex;
+  align-items: center;
+}
+
+.ant-input-password {
+  height: 40px !important;
+}
+
+.ant-btn-primary {
+  width: 100%;
+  background-color: #1890ff;
+  border-color: #1890ff;
+  height: 40px;
+  font-size: 16px;
+}
+
+.ant-btn-primary:hover {
+  background-color: #40a9ff;
+  border-color: #40a9ff;
+}
+
+.profile-page {
+  font-family: 'Roboto', sans-serif;
+}
+
+.ant-btn-danger {
+  background-color: #ff4d4f;
+  border-color: #ff4d4f;
+}
+
+.ant-btn-danger:hover {
+  background-color: #ff7875;
+  border-color: #ff7875;
+}
+
 
 /* Carousel */
 #carousel {
@@ -233,7 +301,7 @@ body {
 
 /* Movie Slider */
 .movie-slider {
-  padding: 0 1.25rem;
+  padding: 0rem 1.25rem;
   margin: 1.25rem;
   position: relative;
   color: #fff;
@@ -292,7 +360,7 @@ body {
   text-align: center;
   transition: transform 0.2s;
   margin: 1.25rem 0.313rem;
-  height: 26rem;
+  height: 27rem;
   width: 12.5rem;
 }
 
@@ -864,4 +932,83 @@ input {
   color: red;
   text-align: center;
   margin-bottom: 0.9375rem;
+}
+
+/* Profile Page */
+
+.profile-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(89.7deg, rgb(0, 0, 0) -10.7%, rgb(53, 92, 125) 88.8%);
+  padding: 1.25rem;
+}
+
+.profile-card {
+  display: flex;
+  background-color: linear-gradient(89.7deg, rgb(0, 0, 0) -10.7%, rgb(53, 92, 125) 88.8%);
+  color: #f6ead3;
+  padding: 1.875rem;
+  border-radius: 0.75rem;
+  box-shadow: 0rem 0.25rem 0.75rem rgba(0, 0, 0, 0.9);
+  max-width: 60%;
+  margin-top: 2rem;
+  width: 100%;
+  align-items: center;
+}
+
+.profile-picture {
+  width: 16.75rem;
+  height: 16.75rem;
+  border-radius: 50%;
+  background-color: #ddd;
+  margin-right: 5rem;
+  flex-shrink: 0;
+}
+
+.profile-info {
+  flex-grow: 1;
+}
+
+.profile-username {
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin-bottom: 0.625rem;
+}
+
+.profile-email,
+.profile-bio,
+.profile-genres {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  color: #f6ead3;
+}
+
+.profile-actions {
+  margin-top: 7.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5625rem;
+}
+
+.action-button {
+  padding: 0.625rem 1.25rem;
+  color: white;
+  height: 2.5rem;
+  max-width: 40%;
+}
+
+.action-button:last-child {
+  margin-right: 0;
+}
+
+.loading-message {
+  font-size: 1.2rem;
+  color: #888;
+}
+
+.error-message {
+  color: red;
+  font-size: 1.2rem;
+  text-align: center;
 }
