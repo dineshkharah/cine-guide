@@ -18,6 +18,12 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    bio: {
+        type: String,
+    },
+    favoriteGenres: {
+        type: [String],
+    }
 });
 
 // Hash the password before saving the user
