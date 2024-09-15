@@ -12,8 +12,16 @@ const Navbar = ({ user, handleLogout }) => {
     };
 
     const handleLoginClick = () => {
+        setShowDropdown(false);
         navigate('/login');
     };
+
+    const handleUserLogout = () => {
+        setShowDropdown(false);
+        handleLogout();
+        navigate('/');
+    };
+
 
     const toggleDropdown = () => {
         setShowDropdown(prev => !prev);
@@ -58,7 +66,7 @@ const Navbar = ({ user, handleLogout }) => {
                             <ul>
                                 <li className='dropdown-items'><Link to="./profile">View Profile</Link></li>
                                 <li className='dropdown-items'><Link to="./lists">View Lists</Link></li>
-                                <li className='dropdown-items'><button onClick={handleLogout}>Logout</button></li>
+                                <li className='dropdown-items'><button onClick={handleUserLogout}>Logout</button></li>
                             </ul>
                         </div>
                     )}
