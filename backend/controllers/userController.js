@@ -18,10 +18,19 @@ const getProfile = async (req, res) => {
 // Edit user profile
 const updateProfile = async (req, res) => {
     try {
-        const { username, bio, favoriteGenres } = req.body;
+        const { username, email, bio, favoriteGenres } = req.body;
+
+        // Check if email is already taken by another user
+        if (email) {
+            const emailExists = await User.findOne({ email });
+            if (emailExists && emailExists._id.toString() !== req.user.userId) {
+                return res.status(StatusCodes.BAD_REQUEST).json({ err: 'Email is already in use' });
+            }
+        }
+
         const user = await User.findByIdAndUpdate(
             req.user.userId,
-            { username, bio, favoriteGenres },
+            { username, email, bio, favoriteGenres },
             { new: true, runValidators: true }
         );
         res.status(StatusCodes.OK).json({ user });

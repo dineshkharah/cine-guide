@@ -946,15 +946,17 @@ input {
 
 .profile-card {
   display: flex;
-  background-color: linear-gradient(89.7deg, rgb(0, 0, 0) -10.7%, rgb(53, 92, 125) 88.8%);
+  flex-wrap: wrap;
+  min-width: 21rem;
+  justify-content: center;
+  align-items: space-between;
+  box-shadow: 0rem 0.25rem 0.75rem rgba(0, 0, 0, 0.9);
   color: #f6ead3;
   padding: 1.875rem;
   border-radius: 0.75rem;
-  box-shadow: 0rem 0.25rem 0.75rem rgba(0, 0, 0, 0.9);
   max-width: 60%;
   margin-top: 2rem;
   width: 100%;
-  align-items: center;
 }
 
 .profile-picture {
@@ -962,12 +964,31 @@ input {
   height: 16.75rem;
   border-radius: 50%;
   background-color: #ddd;
-  margin-right: 5rem;
   flex-shrink: 0;
 }
 
 .profile-info {
   flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  margin-left: 6.5rem;
+  margin-top: 1.25rem;
+}
+
+@media (max-width: 768px) {
+  .profile-info {
+    margin-top: 3rem;
+    margin-left: 0;
+    align-items: center;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1200px) {
+  .profile-info {
+    margin-top: 3rem;
+    margin-left: 0;
+    align-items: center;
+  }
 }
 
 .profile-username {
@@ -985,21 +1006,37 @@ input {
 }
 
 .profile-actions {
-  margin-top: 7.5rem;
+  margin-top: 5rem;
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 1.5625rem;
+}
+
+.profile-genre--tag {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 1;
+  flex-grow: 0;
+  flex-basis: auto;
+  line-height: 2.5rem;
+  font-size: 1rem;
+  word-wrap: break-word;
+  white-space: normal;
+  word-break: break-word;
+  max-width: 100%;
+  min-height: 2.5rem;
+  padding: 0 8px;
+  margin-bottom: 10px;
+  text-transform: capitalize;
 }
 
 .action-button {
   padding: 0.625rem 1.25rem;
   color: white;
   height: 2.5rem;
-  max-width: 40%;
-}
-
-.action-button:last-child {
-  margin-right: 0;
+  /* max-width: 8.5rem; */
+  width: 10rem;
 }
 
 .loading-message {
