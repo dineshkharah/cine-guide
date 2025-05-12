@@ -1,12 +1,18 @@
+// src/components/MovieCard.js
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FaStar } from "react-icons/fa";
 import LazyLoad from './LazyLoad';
-import { Button, Modal } from 'antd';
+import { Button } from 'antd';
+import AddToListModal from './AddToListModal';
 
 const MovieCard = ({ movie }) => {
-    const title = movie.title || movie.name; // Use title for movies and name for TV series
+    const title = movie.title || movie.name;
     const [isModalVisible, setIsModalVisible] = useState(false);
+    const [lists, setLists] = useState([
+        { id: 1, name: 'Favorites', containsMedia: false },
+        { id: 2, name: 'Watch Later', containsMedia: true },
+    ]);
 
     const showModal = () => {
         setIsModalVisible(true);
@@ -14,11 +20,17 @@ const MovieCard = ({ movie }) => {
 
     const handleOk = () => {
         setIsModalVisible(false);
-        // Add movie to selected list
     };
 
     const handleCancel = () => {
         setIsModalVisible(false);
+    };
+
+    const onAddOrRemoveMedia = (list) => {
+        const updatedLists = lists.map(l =>
+            l.id === list.id ? { ...l, containsMedia: !l.containsMedia } : l
+        );
+        setLists(updatedLists);
     };
 
     return (
@@ -38,10 +50,15 @@ const MovieCard = ({ movie }) => {
                     </div>
                 </Link>
                 <Button onClick={showModal} type="primary" style={{ backgroundColor: "rgb(26 26 78)" }}>Add to List</Button>
-                <Modal title="Add to List" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
-                    {/* List selection or creation UI goes here */}
-                    <p>Select a list or create a new one.</p>
-                </Modal>
+
+                {/* Reusable AddToListModal */}
+                <AddToListModal
+                    isVisible={isModalVisible}
+                    onCancel={handleCancel}
+                    onOk={handleOk}
+                    mediaTitle={title}
+                    onAddOrRemoveMedia={onAddOrRemoveMedia}
+                />
             </div>
         </LazyLoad>
     );

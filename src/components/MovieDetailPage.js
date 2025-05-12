@@ -3,8 +3,9 @@ import { FaStar } from "react-icons/fa";
 import axios from 'axios';
 import { useParams, Link } from 'react-router-dom';
 import MovieSlider from './MovieSlider';
-import { Skeleton, Button, Modal } from 'antd';
+import { Skeleton, Button } from 'antd';
 import LazyLoad from './LazyLoad';
+import AddToListModal from './AddToListModal';
 
 const MovieDetailPage = () => {
     const { movieId } = useParams();
@@ -13,6 +14,10 @@ const MovieDetailPage = () => {
     const [trailers, setTrailers] = useState([]);
     const [relatedMovies, setRelatedMovies] = useState([]);
     const [isModalVisible, setIsModalVisible] = useState(false);
+    const [lists, setLists] = useState([
+        { id: 1, name: 'Favorites', containsMedia: false },
+        { id: 2, name: 'Watch Later', containsMedia: true },
+    ]);
 
     const fetchMovieDetails = useCallback(async () => {
         try {
@@ -69,6 +74,13 @@ const MovieDetailPage = () => {
         setIsModalVisible(false);
     }
 
+    const onAddOrRemoveMedia = (list) => {
+        const updatedLists = lists.map(l =>
+            l.id === list.id ? { ...l, containsMedia: !l.containsMedia } : l
+        );
+        setLists(updatedLists);
+    };
+
     if (!movie || !credits) {
         return <Skeleton active paragraph={{ rows: 10 }} />;
     }
@@ -83,9 +95,13 @@ const MovieDetailPage = () => {
                     <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt={movie.title} />
                 </LazyLoad>
                 <Button onClick={showModal} style={{ backgroundColor: "rgb(26 26 78)" }} type='primary' > Add to List</Button>
-                <Modal title="Add to List" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
-                    <p>List of lists </p>
-                </Modal>
+                <AddToListModal
+                    isVisible={isModalVisible}
+                    onCancel={handleCancel}
+                    onOk={handleOk}
+                    mediaTitle={movie.title}
+                    onAddOrRemoveMedia={onAddOrRemoveMedia}
+                />
             </figure>
 
 
