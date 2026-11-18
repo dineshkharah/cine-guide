@@ -10,6 +10,7 @@ import SearchPage from './components/SearchPage';
 import PersonDetailPage from './components/PersonDetailPage';
 import SeasonDetailPage from './components/SeasonDetailPage';
 import Footer from './components/Footer';
+import NotFound from './components/NotFound';
 
 import './App.css';
 
@@ -46,6 +47,7 @@ const App = () => {
             <Route path="/series/:seriesId" element={<SeriesDetailPage />} />
             <Route path="/search" element={<SearchPage />} />
             <Route path="/person/:personId" element={<PersonDetailPage />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </div>
         <Footer />

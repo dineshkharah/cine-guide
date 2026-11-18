@@ -70,6 +70,35 @@ body {
   padding: 1.25rem;
 }
 
+/* The page we show for an address that does not match any route. */
+.not-found {
+  color: #fff;
+  padding: 5rem 10%;
+  text-align: center;
+}
+
+.not-found--code {
+  font-size: 5rem;
+  font-weight: bold;
+  letter-spacing: 0.1rem;
+}
+
+.not-found--message {
+  font-size: 1.25rem;
+  margin: 1rem 0 2rem;
+  color: #959499;
+}
+
+.not-found--link {
+  display: inline-block;
+  background-color: red;
+  color: #fff;
+  padding: 0.6rem 1.2rem;
+  border-radius: 0.625rem;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
 /* Shown on the search page when there is nothing to list yet. */
 .search-message {
   color: #fff;
