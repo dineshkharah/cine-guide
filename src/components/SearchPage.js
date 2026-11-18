@@ -29,19 +29,19 @@ const SearchPage = () => {
     useEffect(() => {
         if (query) {
             const timer = setTimeout(() => {
-                navigate(`/search?query=${encodeURIComponent(query)}`);
+                navigate(`/search?query=${encodeURIComponent(query)}`, { replace: true });
             }, 500);
 
             return () => clearTimeout(timer);
         }
 
-        navigate('/search');
+        navigate('/search', { replace: true });
         return undefined;
     }, [query, navigate]);
 
     const handleSearch = (e) => {
         e.preventDefault();
-        navigate(query ? `/search?query=${encodeURIComponent(query)}` : '/search');
+        navigate(query ? `/search?query=${encodeURIComponent(query)}` : '/search', { replace: true });
     };
 
     const renderResults = () => {
