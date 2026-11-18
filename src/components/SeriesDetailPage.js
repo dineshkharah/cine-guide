@@ -149,13 +149,10 @@ const SeriesDetailPage = () => {
                     </div>
                 </div>
                 {relatedSeries.length > 0 && (
-                    <div>
-                        <h2>You May Also Like</h2>
-                        <SeriesSlider
-                            fetchUrl={`https://api.themoviedb.org/3/tv/${seriesId}/similar?api_key=${process.env.REACT_APP_API_KEY}&language=en-US&page=1`}
-                            title=""
-                        />
-                    </div>
+                    <SeriesSlider
+                        fetchUrl={`https://api.themoviedb.org/3/tv/${seriesId}/similar?api_key=${process.env.REACT_APP_API_KEY}&language=en-US&page=1`}
+                        title="You May Also Like"
+                    />
                 )}
             </div>
         </div>
