@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { CiCircleMore } from "react-icons/ci";
 import useFetch from '../hooks/useFetch';
+import { imageUrl, formatRating, formatYear } from '../utils/tmdb';
 
 const SLIDE_INTERVAL = 10000;
 const POPULAR_URL = `https://api.themoviedb.org/3/discover/movie?language=en-US&page=1&sort_by=popularity.desc&api_key=${process.env.REACT_APP_API_KEY}`;
@@ -61,13 +62,13 @@ const Carousel = () => {
                             key={movie.id}
                             aria-hidden={index !== activeIndex}
                         >
-                            <img src={`https://image.tmdb.org/t/p/w500${movie.backdrop_path}`} className="carousel-image" alt={movie.title} />
+                            <img src={imageUrl(movie.backdrop_path)} className="carousel-image" alt={movie.title} />
                             <div className="carousel-caption">
                                 <div className="overlay-text">
                                     <h3 className="carousel-title">{movie.title}</h3>
                                     <div className="carousel-meta carousel-text">
-                                        <p className="carousel-year">{new Date(movie.release_date).getFullYear()}</p>
-                                        <p className="carousel-rating">{movie.vote_average.toFixed(1)}</p>
+                                        <p className="carousel-year">{formatYear(movie.release_date)}</p>
+                                        <p className="carousel-rating">{formatRating(movie.vote_average)}</p>
                                     </div>
                                     <p className="carousel-text">{mapGenreNames(movie.genre_ids)}</p>
                                     <p className="carousel-description carousel-text">{movie.overview}</p>

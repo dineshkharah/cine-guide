@@ -5,6 +5,7 @@ import SeriesSlider from './SeriesSlider';
 import { Skeleton } from 'antd';
 import LazyLoad from './LazyLoad';
 import useFetch from '../hooks/useFetch';
+import { imageUrl, formatRating, formatYear } from '../utils/tmdb';
 
 const SeriesDetailPage = () => {
     const { seriesId } = useParams();
@@ -38,7 +39,7 @@ const SeriesDetailPage = () => {
         <div className="series-details">
             <figure className="series-detail--image">
                 <LazyLoad skeletonType="image">
-                    <img src={`https://image.tmdb.org/t/p/w500${series.poster_path}`} alt={`Poster of ${series.name}`} />
+                    <img src={imageUrl(series.poster_path)} alt={`Poster of ${series.name}`} />
                 </LazyLoad>
             </figure>
             <div className="series-details--main">
@@ -50,10 +51,10 @@ const SeriesDetailPage = () => {
                         <div className="series-info--data">
                             <section className="series-info--rating">
                                 <FaStar style={{ color: "#FFD700" }} />
-                                <p>{series.vote_average.toFixed(1)}</p>
+                                <p>{formatRating(series.vote_average)}</p>
                             </section>
                             <p>{series.number_of_seasons} Seasons</p>
-                            <p>{series.first_air_date ? new Date(series.first_air_date).getFullYear() : ''}</p>
+                            <p>{formatYear(series.first_air_date)}</p>
                         </div>
                     </LazyLoad>
                     <LazyLoad skeletonType="content">
@@ -106,14 +107,14 @@ const SeriesDetailPage = () => {
                                     <figure>
                                         <img
                                             className="season-card--image"
-                                            src={`https://image.tmdb.org/t/p/w500${season.poster_path}`}
+                                            src={imageUrl(season.poster_path)}
                                             alt={`Poster of ${season.name}`}
                                         />
                                     </figure>
                                     <div className="season-card--info">
                                         <h3 className="season-card--title">{season.name}</h3>
                                         <p>{season.episode_count} Episodes</p>
-                                        <p>{season.air_date ? new Date(season.air_date).getFullYear() : ''}</p>
+                                        <p>{formatYear(season.air_date)}</p>
                                     </div>
                                 </Link>
                             </LazyLoad>

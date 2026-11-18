@@ -4,6 +4,7 @@ import { FaStar } from "react-icons/fa";
 import { Skeleton } from 'antd';
 import LazyLoad from './LazyLoad';
 import useFetch from '../hooks/useFetch';
+import { imageUrl, formatRating, formatYear } from '../utils/tmdb';
 
 const SeasonDetailPage = () => {
     const { seriesId, seasonNumber } = useParams();
@@ -23,7 +24,7 @@ const SeasonDetailPage = () => {
         <div className="season-details">
             <figure>
                 <LazyLoad skeletonType="image">
-                    <img src={`https://image.tmdb.org/t/p/w500${season.poster_path}`} alt={season.name} className="season-detail--image" />
+                    <img src={imageUrl(season.poster_path)} alt={season.name} className="season-detail--image" />
                 </LazyLoad>
             </figure>
             <div className="season-details--main">
@@ -33,7 +34,7 @@ const SeasonDetailPage = () => {
                     </LazyLoad>
                     <LazyLoad skeletonType="content">
                         <div className="season-info--data">
-                            <p>{season.air_date ? new Date(season.air_date).getFullYear() : ''}</p>
+                            <p>{formatYear(season.air_date)}</p>
                             <p>{season.episodes.length} Episodes</p>
                         </div>
                     </LazyLoad>
@@ -46,12 +47,12 @@ const SeasonDetailPage = () => {
                             {season.episodes.map(episode => (
                                 <LazyLoad key={episode.id} skeletonType="card">
                                     <div className="episode-card">
-                                        <img src={`https://image.tmdb.org/t/p/w500${episode.still_path}`} alt={episode.name} className="episode-card--image" />
+                                        <img src={imageUrl(episode.still_path)} alt={episode.name} className="episode-card--image" />
                                         <h5 className="episode-card--title">{episode.name}</h5>
                                         <p className="episode-card--overview">{episode.overview}</p>
                                         <p className="episode-card--rating">
                                             <FaStar style={{ color: "#FFD700" }} />
-                                            {episode.vote_average.toFixed(1)}
+                                            {formatRating(episode.vote_average)}
                                         </p>
                                         <p className="episode-card--airdate">{episode.air_date}</p>
                                     </div>

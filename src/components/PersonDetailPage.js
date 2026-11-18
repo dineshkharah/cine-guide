@@ -5,6 +5,7 @@ import SeriesCard from './SeriesCard';
 import LazyLoad from './LazyLoad';
 import { Skeleton } from 'antd';
 import useFetch from '../hooks/useFetch';
+import { imageUrl } from '../utils/tmdb';
 
 const PersonDetailPage = () => {
     const { personId } = useParams();
@@ -31,7 +32,7 @@ const PersonDetailPage = () => {
         <div className="person-details">
             <figure className="person-detail--image">
                 <LazyLoad skeletonType="image">
-                    <img src={`https://image.tmdb.org/t/p/w500${person.profile_path}`} alt={person.name} className="person-detail--image" />
+                    <img src={imageUrl(person.profile_path)} alt={person.name} className="person-detail--image" />
                 </LazyLoad>
             </figure>
             <div className="person-details--main">

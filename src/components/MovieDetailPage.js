@@ -5,6 +5,7 @@ import MovieSlider from './MovieSlider';
 import { Skeleton } from 'antd';
 import LazyLoad from './LazyLoad';
 import useFetch from '../hooks/useFetch';
+import { imageUrl, formatRating, formatYear } from '../utils/tmdb';
 
 const MovieDetailPage = () => {
     const { movieId } = useParams();
@@ -39,7 +40,7 @@ const MovieDetailPage = () => {
         <div className="movie-details">
             <figure className="movie-detail--image">
                 <LazyLoad skeletonType="image">
-                    <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt={movie.title} />
+                    <img src={imageUrl(movie.poster_path)} alt={movie.title} />
                 </LazyLoad>
             </figure>
             <div className="movie-details--main">
@@ -51,10 +52,10 @@ const MovieDetailPage = () => {
                         <div className="movie-info--data">
                             <section className="movie-info--rating">
                                 <FaStar style={{ color: "#FFD700" }} aria-hidden="true" />
-                                <p>{movie.vote_average.toFixed(1)}</p>
+                                <p>{formatRating(movie.vote_average)}</p>
                             </section>
                             <p>{movie.runtime}m</p>
-                            <p>{new Date(movie.release_date).getFullYear()}</p>
+                            <p>{formatYear(movie.release_date)}</p>
                         </div>
                     </LazyLoad>
                     <LazyLoad skeletonType="content">
