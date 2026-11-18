@@ -63,6 +63,20 @@ body {
   flex: 1;
 }
 
+/* Shown when a request to the movie database fails. */
+.load-error {
+  color: #ffb4b4;
+  font-size: 1rem;
+  padding: 1.25rem;
+}
+
+/* Shown on the search page when there is nothing to list yet. */
+.search-message {
+  color: #fff;
+  font-size: 1.25rem;
+  padding: 0.938rem;
+}
+
 
 
 

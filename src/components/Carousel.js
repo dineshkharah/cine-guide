@@ -1,44 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { CiCircleMore } from "react-icons/ci";
-import axios from 'axios';
+import useFetch from '../hooks/useFetch';
 
 const SLIDE_INTERVAL = 10000;
+const POPULAR_URL = `https://api.themoviedb.org/3/discover/movie?language=en-US&page=1&sort_by=popularity.desc&api_key=${process.env.REACT_APP_API_KEY}`;
+const GENRES_URL = `https://api.themoviedb.org/3/genre/movie/list?api_key=${process.env.REACT_APP_API_KEY}&language=en-US`;
 
 const Carousel = () => {
-    const [carouselData, setCarouselData] = useState([]);
-    const [genres, setGenres] = useState({});
+    const { data: popular, error } = useFetch(POPULAR_URL);
+    const { data: genreData } = useFetch(GENRES_URL);
     const [activeIndex, setActiveIndex] = useState(0);
 
-    useEffect(() => {
-        const getCarouselMovie = async () => {
-            try {
-                const response = await axios.get(`https://api.themoviedb.org/3/discover/movie?language=en-US&page=1&sort_by=popularity.desc&api_key=${process.env.REACT_APP_API_KEY}`);
-                setCarouselData(response.data.results.slice(0, 10));
-            } catch (error) {
-                console.error('Error fetching movie details:', error);
-            }
-        };
-
-        const getGenres = async () => {
-            try {
-                const response = await axios.get(`https://api.themoviedb.org/3/genre/movie/list?api_key=${process.env.REACT_APP_API_KEY}&language=en-US`);
-                const genresArray = response.data.genres;
-                const genresObject = {};
-                genresArray.forEach(genre => {
-                    genresObject[genre.id] = genre.name;
-                });
-                setGenres(genresObject);
-            } catch (error) {
-                console.error('Error fetching genres:', error);
-            }
-        };
-
-        getCarouselMovie();
-        getGenres();
-    }, []);
-
+    const carouselData = (popular?.results || []).slice(0, 10);
     const slideCount = carouselData.length;
+
+    // Turn the list of genres into a lookup of id to name.
+    const genreNameById = {};
+    (genreData?.genres || []).forEach((genre) => {
+        genreNameById[genre.id] = genre.name;
+    });
 
     // Move to the next slide on a timer.
     // The update uses a function so activeIndex is not a dependency here.
@@ -64,7 +45,11 @@ const Carousel = () => {
     };
 
     const mapGenreNames = (genreIds) =>
-        genreIds.map(id => genres[id]).filter(Boolean).join(', ');
+        genreIds.map(id => genreNameById[id]).filter(Boolean).join(', ');
+
+    if (error) {
+        return <p className="load-error">Could not load the featured movies. Check your connection and try again.</p>;
+    }
 
     return (
         <div className="carousel-container">

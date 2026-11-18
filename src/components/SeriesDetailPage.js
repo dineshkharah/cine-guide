@@ -1,65 +1,37 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { FaStar } from "react-icons/fa";
-import axios from 'axios';
 import { useParams, Link } from 'react-router-dom';
 import SeriesSlider from './SeriesSlider';
 import { Skeleton } from 'antd';
 import LazyLoad from './LazyLoad';
+import useFetch from '../hooks/useFetch';
 
 const SeriesDetailPage = () => {
     const { seriesId } = useParams();
-    const [series, setSeries] = useState(null);
-    const [credits, setCredits] = useState(null);
-    const [trailers, setTrailers] = useState([]);
-    const [relatedSeries, setRelatedSeries] = useState([]);
+    const apiKey = process.env.REACT_APP_API_KEY;
+    const similarUrl = `https://api.themoviedb.org/3/tv/${seriesId}/similar?api_key=${apiKey}&language=en-US&page=1`;
 
-    useEffect(() => {
-        const fetchSeriesDetails = async () => {
-            try {
-                const response = await axios.get(`https://api.themoviedb.org/3/tv/${seriesId}?api_key=${process.env.REACT_APP_API_KEY}&language=en-US`);
-                setSeries(response.data);
-            } catch (error) {
-                console.error('Error fetching series details:', error);
-            }
-        };
+    const { data: series, loading, error } = useFetch(
+        `https://api.themoviedb.org/3/tv/${seriesId}?api_key=${apiKey}&language=en-US`
+    );
+    const { data: credits } = useFetch(
+        `https://api.themoviedb.org/3/tv/${seriesId}/credits?api_key=${apiKey}&language=en-US`
+    );
+    const { data: videos } = useFetch(
+        `https://api.themoviedb.org/3/tv/${seriesId}/videos?api_key=${apiKey}&language=en-US`
+    );
+    const { data: similar } = useFetch(similarUrl);
 
-        const fetchSeriesCredits = async () => {
-            try {
-                const response = await axios.get(`https://api.themoviedb.org/3/tv/${seriesId}/credits?api_key=${process.env.REACT_APP_API_KEY}&language=en-US`);
-                setCredits(response.data);
-            } catch (error) {
-                console.error('Error fetching series credits:', error);
-            }
-        };
+    if (error) {
+        return <p className="load-error">Could not load this series. Check your connection and try again.</p>;
+    }
 
-        const fetchSeriesTrailers = async () => {
-            try {
-                const response = await axios.get(`https://api.themoviedb.org/3/tv/${seriesId}/videos?api_key=${process.env.REACT_APP_API_KEY}&language=en-US`);
-                setTrailers(response.data.results.slice(0, 4));
-            } catch (error) {
-                console.error('Error fetching series trailers:', error);
-            }
-        };
-
-        const fetchRelatedSeries = async () => {
-            try {
-                const response = await axios.get(`https://api.themoviedb.org/3/tv/${seriesId}/similar?api_key=${process.env.REACT_APP_API_KEY}&language=en-US&page=1`);
-                setRelatedSeries(response.data.results);
-            } catch (error) {
-                console.error('Error fetching related series:', error);
-            }
-        };
-
-        fetchSeriesDetails();
-        fetchSeriesCredits();
-        fetchSeriesTrailers();
-        fetchRelatedSeries();
-    }, [seriesId]);
-
-    if (!series || !credits) {
+    if (loading || !series || !credits) {
         return <Skeleton active paragraph={{ rows: 10 }} />;
     }
 
+    const trailers = (videos?.results || []).slice(0, 4);
+    const relatedSeries = similar?.results || [];
     const actors = credits.cast.slice(0, 5);
 
     return (
@@ -150,7 +122,7 @@ const SeriesDetailPage = () => {
                 </div>
                 {relatedSeries.length > 0 && (
                     <SeriesSlider
-                        fetchUrl={`https://api.themoviedb.org/3/tv/${seriesId}/similar?api_key=${process.env.REACT_APP_API_KEY}&language=en-US&page=1`}
+                        fetchUrl={similarUrl}
                         title="You May Also Like"
                     />
                 )}

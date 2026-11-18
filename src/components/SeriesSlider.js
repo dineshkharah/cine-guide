@@ -1,34 +1,20 @@
-import React, { useEffect, useState, useRef } from 'react';
-import axios from 'axios';
+import React, { useRef } from 'react';
 import SeriesCard from './SeriesCard';
 import { IoIosArrowDropleft, IoIosArrowDropright } from "react-icons/io";
+import useFetch from '../hooks/useFetch';
 
 const SeriesSlider = ({ title, fetchUrl, limit }) => {
-    const [series, setSeries] = useState([]);
+    const { data, error } = useFetch(fetchUrl);
     const containerRef = useRef(null);
 
-    useEffect(() => {
-        const fetchSeries = async () => {
-            try {
-                const response = await axios.get(fetchUrl);
-                setSeries(response.data.results || []);
-            } catch (error) {
-                console.error('Error fetching series:', error);
-                setSeries([]);
-            }
-        };
-
-        fetchSeries();
-    }, [fetchUrl]);
-
+    const series = data?.results || [];
     const displayedSeries = limit ? series.slice(0, limit) : series;
 
-    const scrollLeft = () => {
-        containerRef.current.scrollBy({ left: -200, behavior: 'smooth' });
-    };
-
-    const scrollRight = () => {
-        containerRef.current.scrollBy({ left: 200, behavior: 'smooth' });
+    const scroll = (direction) => {
+        const scrollAmount = direction === 'left' ? -200 : 200;
+        if (containerRef.current) {
+            containerRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+        }
     };
 
     return (
@@ -36,19 +22,23 @@ const SeriesSlider = ({ title, fetchUrl, limit }) => {
             <div className="movie-slider--header">
                 <h3 className="movie-slider--title">{title}</h3>
                 <div className="movie-slider--controls">
-                    <button className="movie-slider--button" onClick={scrollLeft}>
+                    <button className="movie-slider--button" onClick={() => scroll('left')} aria-label="Scroll left">
                         <IoIosArrowDropleft />
                     </button>
-                    <button className="movie-slider--button" onClick={scrollRight}>
+                    <button className="movie-slider--button" onClick={() => scroll('right')} aria-label="Scroll right">
                         <IoIosArrowDropright />
                     </button>
                 </div>
             </div>
-            <div className="movie-slider--container" ref={containerRef}>
-                {displayedSeries.map(serie => (
-                    <SeriesCard key={serie.id} series={serie} />
-                ))}
-            </div>
+            {error ? (
+                <p className="load-error">Could not load these titles. Check your connection and try again.</p>
+            ) : (
+                <div className="movie-slider--container" ref={containerRef}>
+                    {displayedSeries.map(serie => (
+                        <SeriesCard key={serie.id} series={serie} />
+                    ))}
+                </div>
+            )}
         </div>
     );
 };

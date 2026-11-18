@@ -1,28 +1,21 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React from 'react';
 import { useParams } from 'react-router-dom';
-import axios from 'axios';
 import { FaStar } from "react-icons/fa";
 import { Skeleton } from 'antd';
 import LazyLoad from './LazyLoad';
+import useFetch from '../hooks/useFetch';
 
 const SeasonDetailPage = () => {
     const { seriesId, seasonNumber } = useParams();
-    const [season, setSeason] = useState(null);
+    const { data: season, loading, error } = useFetch(
+        `https://api.themoviedb.org/3/tv/${seriesId}/season/${seasonNumber}?api_key=${process.env.REACT_APP_API_KEY}&language=en-US`
+    );
 
-    const fetchSeasonDetails = useCallback(async () => {
-        try {
-            const response = await axios.get(`https://api.themoviedb.org/3/tv/${seriesId}/season/${seasonNumber}?api_key=${process.env.REACT_APP_API_KEY}&language=en-US`);
-            setSeason(response.data);
-        } catch (error) {
-            console.error('Error fetching season details:', error);
-        }
-    }, [seriesId, seasonNumber]);
+    if (error) {
+        return <p className="load-error">Could not load this season. Check your connection and try again.</p>;
+    }
 
-    useEffect(() => {
-        fetchSeasonDetails();
-    }, [fetchSeasonDetails]);
-
-    if (!season) {
+    if (loading || !season) {
         return <Skeleton active paragraph={{ rows: 10 }} />;
     }
 

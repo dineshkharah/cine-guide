@@ -1,50 +1,37 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import axios from 'axios';
+import React from 'react';
 import { useParams } from 'react-router-dom';
 import MovieCard from './MovieCard';
 import SeriesCard from './SeriesCard';
 import LazyLoad from './LazyLoad';
 import { Skeleton } from 'antd';
+import useFetch from '../hooks/useFetch';
 
 const PersonDetailPage = () => {
     const { personId } = useParams();
-    const [person, setPerson] = useState(null);
-    const [credits, setCredits] = useState([]);
+    const apiKey = process.env.REACT_APP_API_KEY;
 
-    const fetchPersonDetails = useCallback(async () => {
-        try {
-            const response = await axios.get(`https://api.themoviedb.org/3/person/${personId}?api_key=${process.env.REACT_APP_API_KEY}&language=en-US`);
-            setPerson(response.data);
-        } catch (error) {
-            console.error('Error fetching person details:', error);
-        }
-    }, [personId]);
+    const { data: person, loading, error } = useFetch(
+        `https://api.themoviedb.org/3/person/${personId}?api_key=${apiKey}&language=en-US`
+    );
+    const { data: creditsData } = useFetch(
+        `https://api.themoviedb.org/3/person/${personId}/combined_credits?api_key=${apiKey}&language=en-US`
+    );
 
-    const fetchPersonCredits = useCallback(async () => {
-        try {
-            const response = await axios.get(`https://api.themoviedb.org/3/person/${personId}/combined_credits?api_key=${process.env.REACT_APP_API_KEY}&language=en-US`);
-            setCredits(response.data.cast);
-        } catch (error) {
-            console.error('Error fetching person credits:', error);
-        }
-    }, [personId]);
+    if (error) {
+        return <p className="load-error">Could not load this person. Check your connection and try again.</p>;
+    }
 
-    useEffect(() => {
-        fetchPersonDetails();
-        fetchPersonCredits();
-    }, [fetchPersonDetails, fetchPersonCredits]);
-
-    if (!person) {
+    if (loading || !person) {
         return <Skeleton active paragraph={{ rows: 10 }} />;
     }
 
-    const limitedCredits = credits.slice(0, 20);
+    const limitedCredits = (creditsData?.cast || []).slice(0, 20);
 
     return (
         <div className="person-details">
             <figure className="person-detail--image">
                 <LazyLoad skeletonType="image">
-                    <img src={`https://image.tmdb.org/t/p/w500${person.profile_path}`} alt={person.name} className='person-detail--image' />
+                    <img src={`https://image.tmdb.org/t/p/w500${person.profile_path}`} alt={person.name} className="person-detail--image" />
                 </LazyLoad>
             </figure>
             <div className="person-details--main">
@@ -53,7 +40,7 @@ const PersonDetailPage = () => {
                         <h1 className="person-info--name">{person.name}</h1>
                     </LazyLoad>
                     <LazyLoad skeletonType="contentdesc">
-                        <p className='person-info--biography'>{person.biography}</p>
+                        <p className="person-info--biography">{person.biography}</p>
                     </LazyLoad>
                 </div>
                 <div>
@@ -65,10 +52,10 @@ const PersonDetailPage = () => {
                                 // each one needs the card that links to the right page.
                                 // credit_id is different for every credit, so keys stay
                                 // unique even if someone is credited twice in one title.
-                                const key = credit.credit_id || `${credit.media_type}-${credit.id}`;
+                                const cardKey = credit.credit_id || `${credit.media_type}-${credit.id}`;
                                 return credit.media_type === 'tv'
-                                    ? <SeriesCard key={key} series={credit} />
-                                    : <MovieCard key={key} movie={credit} />;
+                                    ? <SeriesCard key={cardKey} series={credit} />
+                                    : <MovieCard key={cardKey} movie={credit} />;
                             })
                         ) : (
                             <p>No credits available</p>

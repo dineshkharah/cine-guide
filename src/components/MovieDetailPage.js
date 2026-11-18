@@ -1,65 +1,37 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React from 'react';
 import { FaStar } from "react-icons/fa";
-import axios from 'axios';
 import { useParams, Link } from 'react-router-dom';
 import MovieSlider from './MovieSlider';
 import { Skeleton } from 'antd';
 import LazyLoad from './LazyLoad';
+import useFetch from '../hooks/useFetch';
 
 const MovieDetailPage = () => {
     const { movieId } = useParams();
-    const [movie, setMovie] = useState(null);
-    const [credits, setCredits] = useState(null);
-    const [trailers, setTrailers] = useState([]);
-    const [relatedMovies, setRelatedMovies] = useState([]);
+    const apiKey = process.env.REACT_APP_API_KEY;
+    const similarUrl = `https://api.themoviedb.org/3/movie/${movieId}/similar?api_key=${apiKey}&language=en-US&page=1`;
 
-    const fetchMovieDetails = useCallback(async () => {
-        try {
-            const response = await axios.get(`https://api.themoviedb.org/3/movie/${movieId}?api_key=${process.env.REACT_APP_API_KEY}&language=en-US`);
-            setMovie(response.data);
-        } catch (error) {
-            console.error('Error fetching movie details:', error);
-        }
-    }, [movieId]);
+    const { data: movie, loading, error } = useFetch(
+        `https://api.themoviedb.org/3/movie/${movieId}?api_key=${apiKey}&language=en-US`
+    );
+    const { data: credits } = useFetch(
+        `https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=${apiKey}&language=en-US`
+    );
+    const { data: videos } = useFetch(
+        `https://api.themoviedb.org/3/movie/${movieId}/videos?api_key=${apiKey}&language=en-US`
+    );
+    const { data: similar } = useFetch(similarUrl);
 
-    const fetchMovieCredits = useCallback(async () => {
-        try {
-            const response = await axios.get(`https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=${process.env.REACT_APP_API_KEY}&language=en-US`);
-            setCredits(response.data);
-        } catch (error) {
-            console.error('Error fetching movie credits:', error);
-        }
-    }, [movieId]);
+    if (error) {
+        return <p className="load-error">Could not load this movie. Check your connection and try again.</p>;
+    }
 
-    const fetchMovieTrailers = useCallback(async () => {
-        try {
-            const response = await axios.get(`https://api.themoviedb.org/3/movie/${movieId}/videos?api_key=${process.env.REACT_APP_API_KEY}&language=en-US`);
-            setTrailers(response.data.results.slice(0, 4));
-        } catch (error) {
-            console.error('Error fetching movie trailers:', error);
-        }
-    }, [movieId]);
-
-    const fetchRelatedMovies = useCallback(async () => {
-        try {
-            const response = await axios.get(`https://api.themoviedb.org/3/movie/${movieId}/similar?api_key=${process.env.REACT_APP_API_KEY}&language=en-US&page=1`);
-            setRelatedMovies(response.data.results);
-        } catch (error) {
-            console.error('Error fetching related movies:', error);
-        }
-    }, [movieId]);
-
-    useEffect(() => {
-        fetchMovieDetails();
-        fetchMovieCredits();
-        fetchMovieTrailers();
-        fetchRelatedMovies();
-    }, [movieId, fetchMovieDetails, fetchMovieCredits, fetchMovieTrailers, fetchRelatedMovies]);
-
-    if (!movie || !credits) {
+    if (loading || !movie || !credits) {
         return <Skeleton active paragraph={{ rows: 10 }} />;
     }
 
+    const trailers = (videos?.results || []).slice(0, 4);
+    const relatedMovies = similar?.results || [];
     const directors = credits.crew.filter(member => member.job === "Director");
     const actors = credits.cast.slice(0, 5);
 
@@ -142,7 +114,7 @@ const MovieDetailPage = () => {
                 </div>
                 {relatedMovies.length > 0 && (
                     <MovieSlider
-                        fetchUrl={`https://api.themoviedb.org/3/movie/${movieId}/similar?api_key=${process.env.REACT_APP_API_KEY}&language=en-US&page=1`}
+                        fetchUrl={similarUrl}
                         title="You May Also Like"
                     />
                 )}
