@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { FaStar } from "react-icons/fa";
 import axios from 'axios';
 import { useParams, Link } from 'react-router-dom';
-import MovieSlider from './MovieSlider';
+import SeriesSlider from './SeriesSlider';
 import { Skeleton } from 'antd';
 import LazyLoad from './LazyLoad';
 
@@ -151,7 +151,7 @@ const SeriesDetailPage = () => {
                 {relatedSeries.length > 0 && (
                     <div>
                         <h2>You May Also Like</h2>
-                        <MovieSlider
+                        <SeriesSlider
                             fetchUrl={`https://api.themoviedb.org/3/tv/${seriesId}/similar?api_key=${process.env.REACT_APP_API_KEY}&language=en-US&page=1`}
                             title=""
                         />

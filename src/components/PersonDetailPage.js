@@ -2,6 +2,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import MovieCard from './MovieCard';
+import SeriesCard from './SeriesCard';
 import LazyLoad from './LazyLoad';
 import { Skeleton } from 'antd';
 
@@ -59,11 +60,16 @@ const PersonDetailPage = () => {
                     <h2 style={{ fontSize: "1.8rem" }}>Known For</h2>
                     <div className="person-credits">
                         {limitedCredits.length > 0 ? (
-                            limitedCredits.map(credit => (
-                                <LazyLoad key={credit.id} skeletonType="card">
-                                    <MovieCard key={credit.id} movie={credit} />
-                                </LazyLoad>
-                            ))
+                            limitedCredits.map(credit => {
+                                // combined_credits has both movies and TV shows, so
+                                // each one needs the card that links to the right page.
+                                // credit_id is different for every credit, so keys stay
+                                // unique even if someone is credited twice in one title.
+                                const key = credit.credit_id || `${credit.media_type}-${credit.id}`;
+                                return credit.media_type === 'tv'
+                                    ? <SeriesCard key={key} series={credit} />
+                                    : <MovieCard key={key} movie={credit} />;
+                            })
                         ) : (
                             <p>No credits available</p>
                         )}
